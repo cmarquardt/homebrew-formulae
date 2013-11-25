@@ -7,7 +7,7 @@ These formulae provide software tailored to my homebrew installation. Right now,
 How to install these formulae?
 ------------------------------
 
-Just `brew tap cmarquardt/science` and then `brew install <formula>`.
+Just `brew tap cmarquardt/formulae` and then `brew install <formula>`.
 
 If the formula conflicts with one from mxcl/master or another tap, one can `brew install cmarquardt/formula/<formula>`.
 
