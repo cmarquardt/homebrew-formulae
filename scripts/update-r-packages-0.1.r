@@ -5,7 +5,7 @@
 #
 # C. Marquardt, Darmstadt
 #
-# 07 July 2013
+# 02 February 2014
 #
 # Note: ROracle, if installed with Oracle Instant clients,
 #       requires the following:
@@ -22,7 +22,6 @@
 #       does the same manipulation of environment variables, 
 #       assuming that ORACLE_HOME is pointing to the
 #       installation place of an Oracle Instant client.
-
 
 # 1. Environment variables (for the ROracle compilation)
 # ------------------------------------------------------
