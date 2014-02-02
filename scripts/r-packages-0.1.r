@@ -36,7 +36,7 @@
 # 2. Update existing packages
 # ---------------------------
 
-update.packages(repos = "http://ftp5.gwdg.de/pub/misc/cran/")
+# update.packages(repos = "http://ftp5.gwdg.de/pub/misc/cran/")
 
 
 # 3. Install packages from CRAN
