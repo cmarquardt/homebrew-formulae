@@ -74,6 +74,8 @@ packages <- c("DBI",
               "argparse",
               "multicore",
               "ncdf4",
+              "xts",
+              "zoo",
               "knitr",
               "stringr",
               "roxygen2",
@@ -112,9 +114,7 @@ packages <- c("DBI",
               "httr", 
               "RCurl", 
               "memoise", 
-              "whisker",
-              "xts",
-              "zoo"
+              "whisker"
 )
 
 
