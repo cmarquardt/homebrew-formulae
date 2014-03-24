@@ -8,6 +8,8 @@ class RPackages < Formula
   sha1 "2e9356b1f9a47f87150af7f0918ddaee403f7dc6"
 
   depends_on 'r'
+  
+  env :std
 
   def install
     system "Rscript", "r-packages-0.1.r"
