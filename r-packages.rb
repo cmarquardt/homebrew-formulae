@@ -5,7 +5,7 @@ require "formula"
 class RPackages < Formula
   homepage ""
   url "https://raw2.github.com/cmarquardt/homebrew-formulae/master/scripts/r-packages-0.1.r"
-  sha1 "886f1ccc216a42b8e2786a6f87c490337e1031b8"
+  sha1 "2e9356b1f9a47f87150af7f0918ddaee403f7dc6"
 
   depends_on 'r'
 
