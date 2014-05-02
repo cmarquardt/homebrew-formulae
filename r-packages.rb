@@ -3,20 +3,18 @@ require "formula"
 # Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
 
 class RPackages < Formula
-  homepage ""
-  url "https://raw2.github.com/cmarquardt/homebrew-formulae/master/packages/r-packages"
+  url "https://github.com/cmarquardt/R-packages.git"
   version "0.1"
-  home ""
-  sha1 "2e9356b1f9a47f87150af7f0918ddaee403f7dc6"
+  homepage ""
 
   depends_on 'r'
   
   env :std
 
   def install
-    system "configure", "--prefix=#{}{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make", "install-packages"
-    system "make", "intall"
+    system "make", "install"
   end
 
   test do
