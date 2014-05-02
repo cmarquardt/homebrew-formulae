@@ -4,7 +4,9 @@ require "formula"
 
 class RPackages < Formula
   homepage ""
-  url "https://raw2.github.com/cmarquardt/homebrew-formulae/master/scripts/r-packages-0.1.r"
+  url "https://raw2.github.com/cmarquardt/homebrew-formulae/master/packages/r-packages"
+  version "0.1"
+  home ""
   sha1 "2e9356b1f9a47f87150af7f0918ddaee403f7dc6"
 
   depends_on 'r'
@@ -12,7 +14,9 @@ class RPackages < Formula
   env :std
 
   def install
-    system "Rscript", "r-packages-0.1.r"
+    system "configure", "--prefix=#{}{prefix}"
+    system "make", "install-packages"
+    system "make", "intall"
   end
 
   test do
