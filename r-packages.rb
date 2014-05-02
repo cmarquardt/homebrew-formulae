@@ -17,6 +17,13 @@ class RPackages < Formula
     system "make", "install"
   end
 
+  def caveats; <<-EOS.undent
+    R packages installed in this homebrew installation can be updated by running
+
+       R-packages-update
+    EOS
+  end
+
   test do
     # `test do` will create, run in and delete a temporary directory.
     # Run the test with `brew test r-packages`.
