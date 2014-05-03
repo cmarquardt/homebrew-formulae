@@ -1,0 +1,32 @@
+require "formula"
+
+# Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
+
+class PythonPackages < Formula
+  url "https://github.com/cmarquardt/Python-packages.git"
+  version "0.1"
+  homepage ""
+
+  depends_on :python
+  
+  env :std
+
+  def install
+    system "./configure", "--prefix=#{prefix}"
+    system "make", "install-packages"
+    system "make", "install"
+  end
+
+  def caveats; <<-EOS.undent
+    Python packages installed in this homebrew installation can be updated by running
+
+       python-packages-update
+    EOS
+  end
+
+  test do
+    # `test do` will create, run in and delete a temporary directory.
+    # Run the test with `brew test python-packages`.
+    system "python", "-e", "library(ncdf4)"
+  end
+end
