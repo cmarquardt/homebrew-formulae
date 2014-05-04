@@ -8,6 +8,10 @@ class PythonPackages < Formula
   homepage ""
 
   depends_on :python
+  depends_on 'netcdf'
+  depends_on 'pillow'
+  depends_on 'matplotlib'
+  depends_on 'basemap'
   
   env :std
 
@@ -27,6 +31,6 @@ class PythonPackages < Formula
   test do
     # `test do` will create, run in and delete a temporary directory.
     # Run the test with `brew test python-packages`.
-    system "python", "-e", "library(ncdf4)"
+    system "python", "-c", "'import netCDF4'"
   end
 end
