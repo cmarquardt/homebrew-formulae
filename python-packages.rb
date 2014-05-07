@@ -4,7 +4,7 @@ require "formula"
 
 class PythonPackages < Formula
   url "https://github.com/cmarquardt/Python-packages.git"
-  version "0.2"
+  version "0.3"
   homepage ""
 
   depends_on :python
@@ -25,6 +25,12 @@ class PythonPackages < Formula
     Python packages installed in this homebrew installation can be updated by running
 
        python-packages-update
+
+    The installed version of numpy should have been patched for the setfield bug
+    in recarrays; the patch can be reapplied (e.g., after an update of numpy) with
+
+       numpy-patch
+
     EOS
   end
 
