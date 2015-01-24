@@ -4,7 +4,7 @@ require "formula"
 
 class PythonPackages < Formula
   url "https://github.com/cmarquardt/Python-packages.git"
-  version "0.4"
+  version "0.5"
   homepage ""
 
   depends_on :python
