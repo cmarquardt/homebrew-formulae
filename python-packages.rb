@@ -26,8 +26,8 @@ class PythonPackages < Formula
 
        python-packages-update
 
-    The installed version of numpy should have been patched for the setfield bug
-    in recarrays; the patch can be reapplied (e.g., after an update of numpy) with
+    Current versions of numpy still suffer from a setfield() bug in recarrays; a patch 
+    can be applied (e.g., after an update of numpy) with
 
        numpy-patch
 
