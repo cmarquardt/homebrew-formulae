@@ -2,8 +2,8 @@ require "formula"
 
 class Eugene < Formula
   homepage ""
-  url "file:///Users/marq/Dropbox/Code/eugene-4.19.tar.gz"
-  sha1 "a5331aedb105f556cb70367c267ed5c8e0c40728"
+  url "file:///Users/marq/Dropbox/Code/eumetsat/eugene-4.20.tar.gz"
+  sha1 "9137506c24a514eb1a509a01083114fbf19380aa"
 
   depends_on :python => :recommended
   depends_on 'jpeg'
