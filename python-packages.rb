@@ -4,10 +4,12 @@ require "formula"
 
 class PythonPackages < Formula
   url "https://github.com/cmarquardt/Python-packages.git"
-  version "1.0"
+  version "1.1"
   homepage ""
 
   depends_on :python
+  depends_on 'numpy'
+  depends_on 'scipy'
   depends_on 'netcdf'
   depends_on 'pillow'
   depends_on 'matplotlib'
