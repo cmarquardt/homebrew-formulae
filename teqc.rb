@@ -3,9 +3,9 @@ require "formula"
 class Teqc < Formula
   desc "TEQC - The Toolkit for GPS/GLONASS/Galileo/SBAS/Beidou/QZSS Data"
   homepage "https://www.unavco.org/software/data-processing/teqc/teqc.html"
-  url "http://www.unavco.org/software/data-processing/teqc/development/teqc_OSX_i5_gcc4.3d_64.zip"
-  version "2015.11.06"
-  sha1 "647ea11eb30ead524fd6b6f0c04e153f28dd9d5c"
+  url "https://www.unavco.org/software/data-processing/teqc/development/teqc_OSX_i5_gcc4.3d_64.zip"
+  version "2016.04.01"
+  sha1 "de15d7f8a29e3d719985f6ea3d5470a091dde086"
 
   def install
     bin.install "teqc"
