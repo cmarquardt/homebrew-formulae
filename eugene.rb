@@ -3,7 +3,7 @@ require "formula"
 class Eugene < Formula
   homepage ""
   url "file:///Users/marq/Dropbox/Code/eumetsat/eugene-4.20.tar.gz"
-  sha1 "9137506c24a514eb1a509a01083114fbf19380aa"
+  sha256 "be5d31deb51ab043b370e4ed270ad98f2d3e3027b33698dfccc8eb8750c8c805"
 
   depends_on :python => :recommended
   depends_on 'jpeg'
