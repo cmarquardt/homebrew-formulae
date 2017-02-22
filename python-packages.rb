@@ -13,8 +13,8 @@ class PythonPackages < Formula
   depends_on 'netcdf'
   depends_on 'pillow'
   depends_on 'matplotlib'
-  depends on 'geos'
-  depends on 'proj'
+  depends_on 'geos'
+  depends_on 'proj'
   
   env :std
 
