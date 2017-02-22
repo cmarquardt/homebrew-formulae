@@ -13,7 +13,6 @@ class PythonPackages < Formula
   depends_on 'netcdf'
   depends_on 'pillow'
   depends_on 'matplotlib'
-  depends_on 'matplotlib-basemap'
   
   env :std
 
