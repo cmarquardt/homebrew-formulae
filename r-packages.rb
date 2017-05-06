@@ -4,12 +4,12 @@ require "formula"
 
 class RPackages < Formula
   url "https://github.com/cmarquardt/R-packages.git"
-  version "1.0"
+  version "1.1"
   homepage ""
 
   depends_on 'r'
   depends_on 'jpeg' => :build
-  
+
   env :std
 
   def install
