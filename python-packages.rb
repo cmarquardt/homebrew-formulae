@@ -1,6 +1,6 @@
 require "formula"
 
-# Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
+# Documentation: https://github.com/Homebrew/brew/blob/master/docs/Formula-Cookbook.md
 
 class PythonPackages < Formula
   url "https://github.com/cmarquardt/Python-packages.git"

@@ -1,13 +1,14 @@
 require "formula"
 
-# Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
+# Documentation: https://github.com/Homebrew/brew/blob/master/docs/Formula-Cookbook.md
 
 class RPackages < Formula
   url "https://github.com/cmarquardt/R-packages.git"
-  version "1.1"
+  version "1.2"
   homepage ""
 
   depends_on 'r'
+  depends on 'nlopt' => :build
   depends_on 'jpeg' => :build
 
   env :std
