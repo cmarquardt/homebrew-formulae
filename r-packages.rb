@@ -8,7 +8,7 @@ class RPackages < Formula
   homepage ""
 
   depends_on 'r'
-  depends on 'nlopt' => :build
+  depends_on 'nlopt' => :build
   depends_on 'jpeg' => :build
 
   env :std
