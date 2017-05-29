@@ -4,7 +4,7 @@ require "formula"
 
 class RPackages < Formula
   url "https://github.com/cmarquardt/R-packages.git"
-  version "v1.2"
+  version "v1.3"
   homepage ""
 
   depends_on 'r'
