@@ -30,8 +30,6 @@ class Eccodes < Formula
 
     args << "-DBUILD_SHARED_LIBS=BOTH" if build.with? "static"
 
-    args << "-DCMAKE_SKIP_RPATH=ON" # @rpath specs in shared objects don't work with hombrew (prohibits relocation)
-
     # ecCodes requires an out-of-source build...
     mkdir "build"
     cd "build"
@@ -41,11 +39,9 @@ class Eccodes < Formula
     system "make", "install"
 
     # Rewrite @rpath in .../lib/python2.7/site-packages/gribapi/_gribapi_swig.so
-    system "otool", "-L", "#{prefix}/lib/python2.7/site-packages/gribapi/_gribapi_swig.so"
     system "install_name_tool", "-change", "@rpath/libeccodes.dylib", \
                                            "#{prefix}/lib/libeccodes.dylib", \
                                            "#{prefix}/lib/python2.7/site-packages/gribapi/_gribapi_swig.so"
-    system "otool", "-L", "#{prefix}/lib/python2.7/site-packages/gribapi/_gribapi_swig.so"
   end
 
   test do
