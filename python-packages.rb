@@ -7,12 +7,12 @@ class PythonPackages < Formula
   version "1.6"
   homepage ""
 
-  depends_on :python
-  depends_on 'numpy'
-  depends_on 'scipy'
-  depends_on 'netcdf'
-  depends_on 'geos'
-  depends_on 'proj'
+  depends_on "python"
+  depends_on "numpy"
+  depends_on "scipy"
+  depends_on "netcdf"
+  depends_on "geos"
+  depends_on "proj"
 
   env :std
 

@@ -13,12 +13,12 @@ class Eccodes < Formula
   option "with-static", "Build static in addition to shared library."
 
   depends_on "cmake" => :build
+  depends_on "gcc" => :build
   depends_on "jasper" => :recommended
   depends_on "libpng" => :recommended
   depends_on "python" => :recommended
   depends_on "numpy"  => :recommended
   depends_on "netcdf" => :recommended
-  depends_on :fortran
 
   def install
     args = std_cmake_args
