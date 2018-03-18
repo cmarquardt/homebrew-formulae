@@ -4,12 +4,14 @@ require "formula"
 
 class RPackages < Formula
   url "https://github.com/cmarquardt/R-packages.git"
-  version "v1.4"
+  version "v1.5"
   homepage ""
 
-  depends_on 'r'
-  depends_on 'nlopt' => :build
-  depends_on 'jpeg' => :build
+  depends_on "r"
+  depends_on "jpeg"     => :build
+  depends_on "gdal2"    => :build
+  depends_on "nlopt"    => :build
+  depends_on "udunits2" => :build
 
   env :std
 

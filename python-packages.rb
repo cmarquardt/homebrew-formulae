@@ -9,7 +9,6 @@ class PythonPackages < Formula
 
   depends_on "python"
   depends_on "numpy"
-  depends_on "scipy"
   depends_on "netcdf"
   depends_on "geos"
   depends_on "proj"
