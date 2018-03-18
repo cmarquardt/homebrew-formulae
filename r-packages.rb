@@ -8,10 +8,11 @@ class RPackages < Formula
   homepage ""
 
   depends_on "r"
-  depends_on "jpeg"     => :build
-  depends_on "gdal2"    => :build
-  depends_on "nlopt"    => :build
-  depends_on "udunits2" => :build
+  depends_on "jpeg"    => :build
+  depends_on "gdal2"   => :build
+  depends_on "nlopt"   => :build
+  depends_on "proj"    => :build
+  depends_on "udunits" => :build
 
   env :std
 
