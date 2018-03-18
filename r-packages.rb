@@ -4,7 +4,7 @@ require "formula"
 
 class RPackages < Formula
   url "https://github.com/cmarquardt/R-packages.git"
-  version "v1.6"
+  version "v2.0"
   homepage ""
 
   depends_on "r"
@@ -22,16 +22,21 @@ class RPackages < Formula
     system "make", "install"
   end
 
-  def caveats; <<-EOS.undent
-    R packages installed in this homebrew installation can be updated by running
+  def caveats; <<-EOS
+    Standard R packages can be installed in this homebrew installation with
+
+       R-packages-install
+
+    and later updated with
 
        R-packages-update
+
+    The ROracle package requires a working Oracle Instant Client installation
+    with ORACLE_HOME pointing to its root directory. It's installed with
+
+       R-oracle-install
+
     EOS
   end
 
-  test do
-    # `test do` will create, run in and delete a temporary directory.
-    # Run the test with `brew test r-packages`.
-    system "Rscript", "-e", "library(ncdf4)"
-  end
 end
