@@ -18,7 +18,6 @@ class RPackages < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make", "install-packages"
     system "make", "install"
   end
 
