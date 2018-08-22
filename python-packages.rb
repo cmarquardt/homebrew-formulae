@@ -21,7 +21,7 @@ class PythonPackages < Formula
     system "make", "install"
   end
 
-  def caveats; <<-EOS.undent
+  def caveats; <<~EOS
     Python packages installed in this homebrew installation can be updated by running
 
        python-packages-update

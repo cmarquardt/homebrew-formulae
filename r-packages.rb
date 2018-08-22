@@ -21,7 +21,7 @@ class RPackages < Formula
     system "make", "install"
   end
 
-  def caveats; <<-EOS
+  def caveats; <<~EOS
     Standard R packages can be installed in this homebrew installation with
 
        R-packages-install
