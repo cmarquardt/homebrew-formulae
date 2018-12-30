@@ -4,7 +4,7 @@ require "formula"
 
 class PythonPackages < Formula
   url "https://github.com/cmarquardt/Python-packages.git"
-  version "1.11"
+  version "1.12"
   homepage ""
 
   depends_on "python@2"
@@ -26,6 +26,14 @@ class PythonPackages < Formula
     Python packages installed in this homebrew installation can be updated by running
 
        python-packages-update
+
+    or more simply with
+
+       pipdate
+
+    A list of outdated packages can be found with
+
+       pip list --outdated
 
     EOS
   end
