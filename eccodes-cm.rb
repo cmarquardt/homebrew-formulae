@@ -2,7 +2,7 @@
 #                http://www.rubydoc.info/github/Homebrew/brew/master/Formula
 # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
-class Eccodes_CM < Formula
+class EccodesCm < Formula
   desc "Decode and encode messages in the GRIB 1/2 and BUFR 3/4 formats, with python and netcdf support"
   homepage "https://software.ecmwf.int/wiki/display/ECC"
   url "https://software.ecmwf.int/wiki/download/attachments/45757960/eccodes-2.12.0-Source.tar.gz"
