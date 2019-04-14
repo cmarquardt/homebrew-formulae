@@ -3,7 +3,7 @@
 # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
 class Eccodes_CM < Formula
-  desc "ADecode and encode messages in the GRIB 1/2 and BUFR 3/4 formats, with python and netcdf support"
+  desc "Decode and encode messages in the GRIB 1/2 and BUFR 3/4 formats, with python and netcdf support"
   homepage "https://software.ecmwf.int/wiki/display/ECC"
   url "https://software.ecmwf.int/wiki/download/attachments/45757960/eccodes-2.12.0-Source.tar.gz"
   sha256 "f75ae5ce9e543622e8e40c3037619f8d9e6542c902933adb371bac82aee91367"
