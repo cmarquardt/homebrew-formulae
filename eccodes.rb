@@ -3,10 +3,10 @@
 # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
 class Eccodes < Formula
-  desc "APIs and tools to handle WMO GRIB (editions 1 and 2) and BUFR (editions 3 and 4) data"
+  desc "ADecode and encode messages in the GRIB 1/2 and BUFR 3/4 formats, with python and netcdf support"
   homepage "https://software.ecmwf.int/wiki/display/ECC"
-  url "https://software.ecmwf.int/wiki/download/attachments/45757960/eccodes-2.5.0-Source.tar.gz"
-  sha256 "18ab44bc444168fd324d07f7dea94f89e056f5c5cd973e818c8783f952702e4e"
+  url "https://software.ecmwf.int/wiki/download/attachments/45757960/eccodes-2.12.0-Source.tar.gz"
+  sha256 "f75ae5ce9e543622e8e40c3037619f8d9e6542c902933adb371bac82aee91367"
 
   conflicts_with "grib-api", :because => "ecCodes replaces grip-api; they cannot be installed in parallel"
 
@@ -21,13 +21,12 @@ class Eccodes < Formula
   depends_on "netcdf" => :recommended
 
   def install
+    inreplace "CMakeLists.txt", "find_package( OpenJPEG )", ""
+
     args = std_cmake_args
-
     args << "-DENABLE_PNG=ON" if build.with? "libpng"
-
     args << "-DENABLE_PYTHON=OFF" if build.without? "python"
     args << "-DENABLE_NETCDF=OFF" if build.without? "netcdf"
-
     args << "-DBUILD_SHARED_LIBS=BOTH" if build.with? "static"
 
     # ecCodes requires an out-of-source build...
@@ -45,6 +44,10 @@ class Eccodes < Formula
   end
 
   test do
+    grib_samples_path = shell_output("#{bin}/codes_info -s").strip
+    assert_match "packingType", shell_output("#{bin}/grib_ls #{grib_samples_path}/GRIB1.tmpl")
+    assert_match "gridType", shell_output("#{bin}/grib_ls #{grib_samples_path}/GRIB2.tmpl")
+
     system "#{bin}/grib_ls", "-V"
     system "#{bin}/bufr_ls", "-V"
     system "#{bin}/gts_ls", "-V"
