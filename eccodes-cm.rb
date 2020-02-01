@@ -1,31 +1,25 @@
-# Documentation: https://docs.brew.sh/Formula-Cookbook.html
-#                http://www.rubydoc.info/github/Homebrew/brew/master/Formula
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class EccodesCm < Formula
-  desc "Decode and encode messages in the GRIB 1/2 and BUFR 3/4 formats, with python and netcdf support"
-  homepage "https://software.ecmwf.int/wiki/display/ECC"
-  url "https://software.ecmwf.int/wiki/download/attachments/45757960/eccodes-2.12.0-Source.tar.gz"
-  sha256 "f75ae5ce9e543622e8e40c3037619f8d9e6542c902933adb371bac82aee91367"
-
-  conflicts_with "grib-api", :because => "ecCodes replaces grip-api; they cannot be installed in parallel"
+  desc "Decode and encode messages in the GRIB 1/2 and BUFR 3/4 formats, with netcdf and static library support"
+  homepage "https://confluence.ecmwf.int/display/ECC"
+  url "https://software.ecmwf.int/wiki/download/attachments/45757960/eccodes-2.16.0-Source.tar.gz"
+  sha256 "141406b724d531fde5ca908a00f9382e1426e32b24d3d96dc31cb2392e7ff8a3"
 
   option "with-static", "Build static in addition to shared library."
 
-  depends_on "cmake" => :build
-  depends_on "gcc" => :build
-  depends_on "jasper" => :recommended
-  depends_on "libpng" => :recommended
-  depends_on "python" => :recommended
-  depends_on "numpy"  => :recommended
-  depends_on "netcdf" => :recommended
+  depends_on "cmake"    => :build
+  depends_on "gcc"      # for gfortran
+  depends_on "jasper"   => :recommended
+  depends_on "libpng"   => :recommended
+  depends_on "netcdf"   => :recommended
+  depends_on "python@2" => :recommended
+  depends_on "numpy"    => :recommended
 
   def install
     inreplace "CMakeLists.txt", "find_package( OpenJPEG )", ""
 
     args = std_cmake_args
     args << "-DENABLE_PNG=ON" if build.with? "libpng"
-    args << "-DENABLE_PYTHON=OFF" if build.without? "python"
+    args << "-DENABLE_PYTHON=OFF" if build.without? "python@2"
     args << "-DENABLE_NETCDF=OFF" if build.without? "netcdf"
     args << "-DBUILD_SHARED_LIBS=BOTH" if build.with? "static"
 
