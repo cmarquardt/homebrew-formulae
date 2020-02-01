@@ -24,7 +24,7 @@ class Sofa < Formula
     installed as 'libsofa_c.a' to avoid name clashes with the Fortran version
     of the same library. It can be linked with
 
-       clang ... -lsofa_c ...
+       clang ... -L#{lib} -lsofa_c ...
 
     EOS
   end

@@ -25,7 +25,7 @@ class SofaFortran < Formula
     The Fortran version of the Standards of Fundamental Astronomy (SOFA) library
     is installed as 'libsofa.a'. It can be linked with
 
-       gfortran ... -lsofa ...
+       gfortran ... -L#{lib} -lsofa ...
 
     EOS
   end
