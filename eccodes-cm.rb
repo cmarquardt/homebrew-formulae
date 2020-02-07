@@ -47,4 +47,71 @@ class EccodesCm < Formula
     system "#{bin}/gts_ls", "-V"
     system "#{bin}/metar_ls", "-V"
   end
+
+  # Patch to turn fprintf() warnings into proper debug messages
+  patch :DATA
+
 end
+
+__END__
+*** eccodes-2.16.0-Source/src/grib_accessor_class_bufr_data_array.c.orig	2020-02-07 18:52:13.000000000 +0100
+--- eccodes-2.16.0-Source/src/grib_accessor_class_bufr_data_array.c	2020-02-07 18:56:41.000000000 +0100
+***************
+*** 787,794 ****
+          } else {
+              if (*v > maxAllowed || *v < minAllowed) {
+                  if (dont_fail_if_out_of_range) {
+!                     fprintf(stderr, "ECCODES WARNING :  encode_double_array: %s. Value (%g) out of range (minAllowed=%g, maxAllowed=%g)."
+!                             " Setting it to missing value\n", bd->shortName, *v, minAllowed, maxAllowed);
+                      grib_set_bits_on(buff->data,pos,modifiedWidth);
+                  } else {
+                      grib_context_log(c, GRIB_LOG_ERROR, "encode_double_array: %s. Value (%g) out of range (minAllowed=%g, maxAllowed=%g).",
+--- 787,794 ----
+          } else {
+              if (*v > maxAllowed || *v < minAllowed) {
+                  if (dont_fail_if_out_of_range) {
+!                    grib_context_log(c, GRIB_LOG_DEBUG, "encode_double_array: %s. Value (%g) out of range (minAllowed=%g, maxAllowed=%g). Setting to missing value.",
+!                            bd->shortName, *v, minAllowed, maxAllowed);
+                      grib_set_bits_on(buff->data,pos,modifiedWidth);
+                  } else {
+                      grib_context_log(c, GRIB_LOG_ERROR, "encode_double_array: %s. Value (%g) out of range (minAllowed=%g, maxAllowed=%g).",
+***************
+*** 841,849 ****
+          while (ii<nvals) {
+              /* Turn out-of-range values into 'missing' */
+              if (*v!=GRIB_MISSING_DOUBLE && (*v < minAllowed || *v > maxAllowed)) {
+!                 fprintf(stderr, "ECCODES WARNING :  encode_double_array: %s. Value at index %ld (%g) out of range (minAllowed=%g, maxAllowed=%g)."
+!                         " Setting it to missing value\n",
+!                         bd->shortName, (long)ii, *v, minAllowed, maxAllowed);
+                  *v = GRIB_MISSING_DOUBLE;
+              }
+              ii++;
+--- 841,848 ----
+          while (ii<nvals) {
+              /* Turn out-of-range values into 'missing' */
+              if (*v!=GRIB_MISSING_DOUBLE && (*v < minAllowed || *v > maxAllowed)) {
+!                 grib_context_log(c, GRIB_LOG_DEBUG, "encode_double_array: %s. Value (%g) out of range (minAllowed=%g, maxAllowed=%g). Setting to missing value.",
+!                         bd->shortName, *v, minAllowed, maxAllowed);
+                  *v = GRIB_MISSING_DOUBLE;
+              }
+              ii++;
+***************
+*** 950,958 ****
+      }
+      else if (value>maxAllowed || value<minAllowed) {
+          if (dont_fail_if_out_of_range) {
+!             fprintf(stderr, "ECCODES WARNING :  encode_double_value: %s. Value (%g) out of range (minAllowed=%g, maxAllowed=%g)."
+!                     " Setting it to missing value\n",
+!                     bd->shortName, value, minAllowed, maxAllowed);
+              value = GRIB_MISSING_DOUBLE;  /* Ignore the bad value and instead use 'missing' */
+              grib_set_bits_on(buff->data,pos,modifiedWidth);
+          } else {
+--- 949,956 ----
+      }
+      else if (value>maxAllowed || value<minAllowed) {
+          if (dont_fail_if_out_of_range) {
+!             grib_context_log(c, GRIB_LOG_DEBUG, "encode_double_array: %s. Value (%g) out of range (minAllowed=%g, maxAllowed=%g). Setting to missing value.",
+!                     bd->shortName, value, minAllowed, maxAllowed);
+              value = GRIB_MISSING_DOUBLE;  /* Ignore the bad value and instead use 'missing' */
+              grib_set_bits_on(buff->data,pos,modifiedWidth);
+          } else {
