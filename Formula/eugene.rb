@@ -1,11 +1,12 @@
 require "formula"
 
 class Eugene < Formula
+  desc "EUMETSAT EPS data format library and python interface"
   homepage ""
   url "file:///Users/marq/Dropbox/Code/eumetsat/eugene-4.20.tar.gz"
   sha256 "be5d31deb51ab043b370e4ed270ad98f2d3e3027b33698dfccc8eb8750c8c805"
 
-  depends_on "python" => :recommended
+  depends_on "python@2" => :recommended
   depends_on "jpeg"
 
   def install
@@ -17,7 +18,7 @@ class Eugene < Formula
     system "make", "install"
 
     if build.with? 'python'
-      system "python", "setup.py", "install", "--prefix=#{prefix}"
+      system "python2", "setup.py", "install", "--prefix=#{prefix}"
     end
   end
 
