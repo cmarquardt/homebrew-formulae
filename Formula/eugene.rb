@@ -1,20 +1,28 @@
 require "formula"
 
 class Eugene < Formula
-  desc "EUMETSAT EPS data format library and python interface"
-  homepage ""
-  url "file:///Users/marq/Dropbox/Code/eumetsat/eugene-4.20.tar.gz"
-  sha256 "be5d31deb51ab043b370e4ed270ad98f2d3e3027b33698dfccc8eb8750c8c805"
+  desc "EUMETSAT Polar System (EPS) data format library and python interface"
+  homepage "https://gitlab.eumetsat.int/eps-tools/eugene"
 
+  url "https://oauth2:#{ENV['HOMEBREW_EUMETSAT_GITLAB_TOKEN']}@gitlab.eumetsat.int/eps-tools/eugene.git", :tag => "v5.0"
+
+  depends_on "libtool"  => :build
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
   depends_on "python@2" => :recommended
   depends_on "jpeg"
 
   def install
+    inreplace "autogen.sh", /libtoolize/, "glibtoolize"
     inreplace "setup.py", /os.path.join\(sys.prefix, 'share', 'eugene'\)/, "os.path.join\('#{HOMEBREW_PREFIX}', 'share', 'eugene'\)"
 
-    system "./configure", "--enable-shared",
-                          "--enable-libeugene",
-                          "--prefix=#{prefix}"
+    # Note: The autogen.sh script already calls configure
+    system "./autogen.sh", "--enable-shared",
+                           "--enable-libeugene",
+                           "--prefix=#{prefix}"
+    #system "./configure", "--enable-shared",
+    #                      "--enable-libeugene",
+    #                      "--prefix=#{prefix}"
     system "make", "install"
 
     if build.with? 'python'
