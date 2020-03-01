@@ -3,17 +3,14 @@ Homebrew formulae
 
 These formulae provide software tailored to my homebrew installation. The currently available formulae are:
 
- - `sofa.rb`:
- - `sofa-fortran.rb`:
- - `eugene.rb`:
- - `eccodes-cm.rb`:
- - `python@2.rb`:
- - `python-packages.rb`:
- - `r-packages.rb`:
+ - `sofa.rb`: Standards of Fundamental Astronomy (SOFA) library - C version
+ - `sofa-fortran.rb`: Standards of Fundamental Astronomy (SOFA) library - Fortran version
+ - `eugene.rb`: EUMETSAT Polar System (EPS) data format library and python interface
+ - `eccodes-cm.rb`: Decode and encode messages in the GRIB 1/2 and BUFR 3/4 formats, with netcdf, static libraries and Python 2 interfaces
+ - `python@2.rb`: Python legacy version v2.7
+ - `python-packages.rb`: 
 
-All python packages are installed via pip(2) - yes, I'm still on Python 2. That's why I'm maintaining the `python@2.rb` formula. Right now, it's simply the last available version before it was removed from Homebrew core. Note that even numpy and scipy for python 2 are supposed to be maintained via pip - there are no formula for them.
-
-Note that several of these formulae are *not* consistent with Homebrew's best practices: They download additional software (e.g., R and python packages) and provide scripts which can be used to update existing installations of these packages or modules.
+Note that several of these formulae are *not* consistent with Homebrew's best practices.
 
 How to install these formulae?
 ------------------------------
