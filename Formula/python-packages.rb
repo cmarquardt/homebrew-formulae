@@ -1,16 +1,15 @@
 require "formula"
 
-# Documentation: https://github.com/Homebrew/brew/blob/master/docs/Formula-Cookbook.md
-
 class PythonPackages < Formula
+  desc "Standard python packages for MetTools"
   url "https://github.com/cmarquardt/Python-packages.git"
-  version "1.12"
-  homepage ""
+  version "2.0"
+  homepage "https://github.com/cmarquardt/Python-packages"
 
+  depends_on "python"
   depends_on "python@2"
-  depends_on "numpy"
-  depends_on "scipy"
   depends_on "netcdf"
+  depends_on "fftw"
   depends_on "geos"
   depends_on "proj"
 
@@ -18,29 +17,26 @@ class PythonPackages < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make", "install-packages"
+    #system "make", "install-packages"
     system "make", "install"
   end
 
   def caveats; <<~EOS
-    Python packages installed in this homebrew installation can be updated by running
+    This formula installs two scripts supporting Jupyter Notebooks and Lab,
+    respectively. Usage:
 
-       python-packages-update
+        notebook start|status|stop
+        jupyterlab start|status|stop
 
-    or more simply with
-
-       pipdate
-
-    A list of outdated packages can be found with
-
-       pip list --outdated
-
+    Both run their respective server on port 9999, so they van *not* be running
+    simultaneously.
     EOS
   end
 
   test do
     # `test do` will create, run in and delete a temporary directory.
     # Run the test with `brew test python-packages`.
-    system "python", "-c", "'import netCDF4'"
+    system "which", "notebook"
+    system "which", "jupyterlab"
   end
 end
