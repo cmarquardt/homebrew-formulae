@@ -9,7 +9,7 @@ class Eugene < Formula
   depends_on "libtool"  => :build
   depends_on "automake" => :build
   depends_on "autoconf" => :build
-  depends_on "python"   => :recommended
+  #depends_on "python"   => :recommended
   depends_on "python@2" => :recommended
   depends_on "jpeg"
 
@@ -23,9 +23,9 @@ class Eugene < Formula
                            "--prefix=#{prefix}"
     system "make", "install"
 
-    if build.with? 'python'
-      system "python3", "setup.py", "install", "--prefix=#{prefix}"
-    end
+    #if build.with? 'python'
+    #  system "python3", "setup.py", "install", "--prefix=#{prefix}"
+    #end
 
     if build.with? 'python@2'
       system "python2", "setup.py", "install", "--prefix=#{prefix}"
