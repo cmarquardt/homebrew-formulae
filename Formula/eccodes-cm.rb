@@ -12,9 +12,18 @@ class EccodesCm < Formula
   depends_on "libpng"   => :recommended
   depends_on "netcdf"   => :recommended
   depends_on "python@2" => :recommended
-  depends_on "numpy"    => :recommended
+
+  # We also depend on numpy
+
+  resource "numpy" do
+    url "https://files.pythonhosted.org/packages/b7/6f/24647f014eef9b67a24adfcbcd4f4928349b4a0f8393b3d7fe648d4d2de3/numpy-1.16.6.zip"
+    sha256 "e5cf3fdf13401885e8eea8170624ec96225e2174eb0c611c6f26dd33b489e3ff"
+  end
 
   def install
+
+    resource("numpy").stage { system "python2", *Language::Python.setup_install_args(prefix) }
+
     inreplace "CMakeLists.txt", "find_package( OpenJPEG )", ""
 
     args = std_cmake_args
