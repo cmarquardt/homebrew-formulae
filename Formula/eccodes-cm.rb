@@ -15,14 +15,18 @@ class EccodesCm < Formula
 
   # We also depend on numpy
 
-  resource "numpy" do
-    url "https://files.pythonhosted.org/packages/b7/6f/24647f014eef9b67a24adfcbcd4f4928349b4a0f8393b3d7fe648d4d2de3/numpy-1.16.6.zip"
-    sha256 "e5cf3fdf13401885e8eea8170624ec96225e2174eb0c611c6f26dd33b489e3ff"
-  end
+  #resource "numpy" do
+  #  url "https://files.pythonhosted.org/packages/b7/6f/24647f014eef9b67a24adfcbcd4f4928349b4a0f8393b3d7fe648d4d2de3/numpy-1.16.6.zip"
+  #  sha256 "e5cf3fdf13401885e8eea8170624ec96225e2174eb0c611c6f26dd33b489e3ff"
+  #end
 
   def install
 
-    resource("numpy").stage { system "python2", *Language::Python.setup_install_args(prefix) }
+    #resource("numpy").stage { system "python2", *Language::Python.setup_install_args(prefix) }
+
+    # Get numpy dependency in place
+
+    system "pip2", "install", "numpy==1.16.6"
 
     inreplace "CMakeLists.txt", "find_package( OpenJPEG )", ""
 
