@@ -6,29 +6,16 @@ class EccodesCm < Formula
 
   option "with-static", "Build static in addition to shared library."
 
-  depends_on "cmake"    => :build
-  depends_on "gcc"      # for gfortran
-  depends_on "jasper"   => :recommended
-  depends_on "libpng"   => :recommended
-  depends_on "netcdf"   => :recommended
-  depends_on "python@2" => :recommended
+  depends_on "cmake"  => :build
+  depends_on "gcc"    # for gfortran
+  depends_on "jasper" => :recommended
+  depends_on "libpng" => :recommended
+  depends_on "netcdf" => :recommended
 
-  # We also depend on numpy
-
-  env :std
-  
-  #resource "numpy" do
-  #  url "https://files.pythonhosted.org/packages/b7/6f/24647f014eef9b67a24adfcbcd4f4928349b4a0f8393b3d7fe648d4d2de3/numpy-1.16.6.zip"
-  #  sha256 "e5cf3fdf13401885e8eea8170624ec96225e2174eb0c611c6f26dd33b489e3ff"
-  #end
+  depends_on "cmarquardt/formulae/python@2"   => :recommended
+  depends_on "cmarquardt/formulae/numpy@1.16" => :recommended
 
   def install
-
-    #resource("numpy").stage { system "python2", *Language::Python.setup_install_args(prefix) }
-
-    # Get numpy dependency in place
-
-    system "pip2", "install", "numpy==1.16.6"
 
     inreplace "CMakeLists.txt", "find_package( OpenJPEG )", ""
 
