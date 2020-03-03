@@ -1,5 +1,3 @@
-require "formula"
-
 class Eugene < Formula
   desc "EUMETSAT Polar System (EPS) data format library and python interface"
   homepage "https://gitlab.eumetsat.int/eps-tools/eugene"
