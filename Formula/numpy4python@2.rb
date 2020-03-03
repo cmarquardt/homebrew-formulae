@@ -1,4 +1,4 @@
-class Numpy4PythonAT2 < Formula
+class Numpy4pythonAT2 < Formula
   desc "Package for scientific computing with Python@2"
   homepage "https://www.numpy.org/"
   url "https://files.pythonhosted.org/packages/b7/6f/24647f014eef9b67a24adfcbcd4f4928349b4a0f8393b3d7fe648d4d2de3/numpy-1.16.6.zip"
