@@ -1,23 +1,16 @@
-require "formula"
-
-class PythonPackages < Formula
-  desc "Standard python packages for MetTools"
-  url "https://github.com/cmarquardt/Python-packages.git"
+class PythonUtils < Formula
+  desc "Some Python utilities"
+  url "https://github.com/cmarquardt/python-utils.git"
   version "2.0"
-  homepage "https://github.com/cmarquardt/Python-packages"
+  homepage "https://github.com/cmarquardt/python-utils"
 
   depends_on "python"
   depends_on "python@2"
-  depends_on "netcdf"
-  depends_on "fftw"
-  depends_on "geos"
-  depends_on "proj"
 
   env :std
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    #system "make", "install-packages"
     system "make", "install"
   end
 
@@ -28,7 +21,7 @@ class PythonPackages < Formula
         notebook start|status|stop
         jupyterlab start|status|stop
 
-    Both run their respective server on port 9999, so they van *not* be running
+    Both run their respective server on port 9999, so they can *not* be running
     simultaneously.
     EOS
   end
