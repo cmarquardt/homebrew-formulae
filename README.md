@@ -8,7 +8,8 @@ These formulae provide software tailored to my homebrew installation. The curren
  - `eugene.rb`: EUMETSAT Polar System (EPS) data format library and python interface
  - `eccodes-cm.rb`: Decode and encode messages in the GRIB 1/2 and BUFR 3/4 formats, with netcdf, static libraries and Python 2 interfaces
  - `python@2.rb`: Python legacy version v2.7
- - `python-packages.rb`: 
+ - `numpy4python@2`: Numpy (v1.16.6) for python@2 
+ - `python-packages.rb`: [depracated]
 
 Note that several of these formulae are *not* consistent with Homebrew's best practices.
 
