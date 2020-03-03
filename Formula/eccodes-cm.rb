@@ -13,7 +13,7 @@ class EccodesCm < Formula
   depends_on "netcdf" => :recommended
 
   depends_on "cmarquardt/formulae/python@2"   => :recommended
-  depends_on "cmarquardt/formulae/numpy@1.16" => :recommended
+  depends_on "cmarquardt/formulae/numpy4Python@2" => :recommended
 
   def install
 
