@@ -55,6 +55,9 @@ class Numpy4pythonAT2 < Formula
         "build", "--fcompiler=gnu95", "--parallel=#{ENV.make_jobs}",
         "install", "--prefix=#{prefix}",
         "--single-version-externally-managed", "--record=installed.txt"
+
+      # Rename f2py binary to avoid conflicts when linking the formula
+      system "mv", "#{prefix}/bin/f2py", "#{prefix}/bin/f2py2"
     end
   end
 
