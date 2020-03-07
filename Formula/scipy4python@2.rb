@@ -1,5 +1,5 @@
 class Scipy4pythonAT2 < Formula
-  desc "Software for mathematics, science, and engineering"
+  desc "Software for mathematics, science, and engineering for Python@2"
   homepage "https://www.scipy.org"
   url "https://files.pythonhosted.org/packages/62/4f/7e95c5000c411164d5ca6f55ac54cda5d200a3b6719dafd215ee0bd61578/scipy-1.2.3.tar.gz"
   sha256 "ecbe6413ca90b8e19f8475bfa303ac001e81b04ec600d17fa7f816271f7cca57"
