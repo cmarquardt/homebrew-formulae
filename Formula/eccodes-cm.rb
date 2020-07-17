@@ -3,6 +3,7 @@ class EccodesCm < Formula
   homepage "https://confluence.ecmwf.int/display/ECC"
   url "https://software.ecmwf.int/wiki/download/attachments/45757960/eccodes-2.16.0-Source.tar.gz"
   sha256 "141406b724d531fde5ca908a00f9382e1426e32b24d3d96dc31cb2392e7ff8a3"
+  revision 1
 
   option "with-static", "Build static in addition to shared library."
 
@@ -16,6 +17,9 @@ class EccodesCm < Formula
   depends_on "cmarquardt/formulae/numpy4python@2" => :recommended
 
   def install
+    # Fix for GCC 10, remove with next version
+    # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=957159
+    ENV.prepend "FFLAGS", "-fallow-argument-mismatch"
 
     inreplace "CMakeLists.txt", "find_package( OpenJPEG )", ""
 
@@ -37,6 +41,11 @@ class EccodesCm < Formula
     system "install_name_tool", "-change", "@rpath/libeccodes.dylib", \
                                            "#{prefix}/lib/libeccodes.dylib", \
                                            "#{prefix}/lib/python2.7/site-packages/gribapi/_gribapi_swig.so"
+
+    # Avoid references to Homebrew shims directory
+    inreplace include/"eccodes_ecbuild_config.h", HOMEBREW_LIBRARY/"Homebrew/shims/mac/super/clang", "/usr/bin/clang"
+    inreplace lib/"pkgconfig/eccodes.pc", HOMEBREW_LIBRARY/"Homebrew/shims/mac/super/clang", "/usr/bin/clang"
+    inreplace lib/"pkgconfig/eccodes_f90.pc", HOMEBREW_LIBRARY/"Homebrew/shims/mac/super/clang", "/usr/bin/clang"
   end
 
   test do
