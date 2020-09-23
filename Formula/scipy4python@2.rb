@@ -38,6 +38,12 @@ class Scipy4pythonAT2 < Formula
     ENV["OPT"] = "-w"
     ENV["FOPT"] = "-fallow-argument-mismatch"
 
+    # Work around "error: no member named 'signbit' in the global namespace"
+    if DevelopmentTools.clang_build_version >= 900
+      ENV.delete "SDKROOT"
+      ENV.delete "HOMEBREW_SDKROOT"
+    end
+
     config = <<~EOS
       [DEFAULT]
       library_dirs = #{HOMEBREW_PREFIX}/lib
