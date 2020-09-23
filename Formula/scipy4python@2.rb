@@ -16,8 +16,8 @@ class Scipy4pythonAT2 < Formula
 
   # Fix XCode 12 changes - see https://github.com/scipy/scipy/issues/12860.
   patch do
-    url "https://github.com/cmarquardt/homebrew-formulae/patches/scipy-1.2.3-xcode-12.patch"
-    sha256 "6affeedda826497caa9b4a9d7667c675d677b591d4deebbe66c69ba86f8bd0fa"
+    url "https://raw.githubusercontent.com/cmarquardt/homebrew-formulae/master/patches/scipy-1.2.3-xcode-12.patch"
+    sha256 "426df17a855e48340b948e637f8265b0460a66b4fac0c19998c56cfca990a535"
   end
 
   # Notes: Some warnings turned into errors with the release of Xcode v12 are fixed
