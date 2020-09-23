@@ -4,6 +4,7 @@ class Scipy4pythonAT2 < Formula
   url "https://files.pythonhosted.org/packages/62/4f/7e95c5000c411164d5ca6f55ac54cda5d200a3b6719dafd215ee0bd61578/scipy-1.2.3.tar.gz"
   sha256 "ecbe6413ca90b8e19f8475bfa303ac001e81b04ec600d17fa7f816271f7cca57"
   head "https://github.com/scipy/scipy.git"
+  revision 1
 
   depends_on "swig" => :build
   depends_on "gcc" # for gfortran
@@ -13,10 +14,29 @@ class Scipy4pythonAT2 < Formula
 
   cxxstdlib_check :skip
 
+  # Fix XCode 12 changes - see https://github.com/scipy/scipy/issues/12860.
+  patch do
+    url "https://github.com/cmarquardt/homebrew-formulae/patches/scipy-1.2.3-xcode-12.patch"
+    sha256 "6affeedda826497caa9b4a9d7667c675d677b591d4deebbe66c69ba86f8bd0fa"
+  end
+
+  # Notes: Some warnings turned into errors with the release of Xcode v12 are fixed
+  #        by the patch above, but others remain - in the deprecated v1.7 Numpy API.
+  #        As I didn't find a patch to be backported, I eventually decided to disable
+  #        all warnings in clang using its -w option.
+  #
+  #        GFortran v10 introduced much stricter interface type checking which breaks
+  #        a lot of legacy code - also in scipy. There is a relatively involved fix
+  #        for newer versions of scipy (see https://github.com/scipy/scipy/pull/11842),
+  #        but it doesn't seem worth to backport it - all it does is enabling the option
+  #        -fallow-argument-mismatch. I do that here in the environment.
+   
   def install
     openblas = Formula["openblas"].opt_prefix
     ENV["ATLAS"] = "None" # avoid linking against Accelerate.framework
     ENV["BLAS"] = ENV["LAPACK"] = "#{openblas}/lib/libopenblas.dylib"
+    ENV["OPT"] = "-w"
+    ENV["FOPT"] = "-fallow-argument-mismatch"
 
     config = <<~EOS
       [DEFAULT]
