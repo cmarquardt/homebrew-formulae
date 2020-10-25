@@ -4,7 +4,7 @@ class Scipy4pythonAT2 < Formula
   url "https://files.pythonhosted.org/packages/62/4f/7e95c5000c411164d5ca6f55ac54cda5d200a3b6719dafd215ee0bd61578/scipy-1.2.3.tar.gz"
   sha256 "ecbe6413ca90b8e19f8475bfa303ac001e81b04ec600d17fa7f816271f7cca57"
   head "https://github.com/scipy/scipy.git"
-  revision 1
+  revision 2
 
   depends_on "swig" => :build
   depends_on "gcc" # for gfortran
@@ -16,7 +16,7 @@ class Scipy4pythonAT2 < Formula
 
   # Fix XCode 12 changes - see https://github.com/scipy/scipy/issues/12860.
   patch do
-    url "https://raw.githubusercontent.com/cmarquardt/homebrew-formulae/master/patches/scipy-1.2.3-xcode-12.patch"
+    url "https://raw.githubusercontent.com/cmarquardt/homebrew-formulae/master/Patches/scipy-1.2.3-xcode-12.patch"
     sha256 "426df17a855e48340b948e637f8265b0460a66b4fac0c19998c56cfca990a535"
   end
 
@@ -30,7 +30,7 @@ class Scipy4pythonAT2 < Formula
   #        for newer versions of scipy (see https://github.com/scipy/scipy/pull/11842),
   #        but it doesn't seem worth to backport it - all it does is enabling the option
   #        -fallow-argument-mismatch. I do that here in the environment.
-   
+
   def install
     openblas = Formula["openblas"].opt_prefix
     ENV["ATLAS"] = "None" # avoid linking against Accelerate.framework
