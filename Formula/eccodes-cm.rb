@@ -1,9 +1,9 @@
 class EccodesCm < Formula
   desc "Decode and encode messages in the GRIB 1/2 and BUFR 3/4 formats, with netcdf, Python 2 interfaces and optional static libraries"
   homepage "https://confluence.ecmwf.int/display/ECC"
-  url "https://software.ecmwf.int/wiki/download/attachments/45757960/eccodes-2.16.0-Source.tar.gz"
+  url "https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.16.0-Source.tar.gz?api=v2"
   sha256 "141406b724d531fde5ca908a00f9382e1426e32b24d3d96dc31cb2392e7ff8a3"
-  revision 1
+  revision 2
 
   option "with-static", "Build static in addition to shared library."
 
