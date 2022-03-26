@@ -7,11 +7,11 @@ class EccodesCm < Formula
 
   option "with-static", "Build static in addition to shared library."
 
-  depends_on "cmake"  => :build
-  depends_on "gcc"    # for gfortran
-  depends_on "jasper" => :recommended
-  depends_on "libpng" => :recommended
-  depends_on "netcdf" => :recommended
+  depends_on "cmake"    => :build
+  depends_on "gcc"         # for gfortran
+  depends_on "jasper@2" => :recommended
+  depends_on "libpng"   => :recommended
+  depends_on "netcdf"   => :recommended
 
   depends_on "cmarquardt/formulae/python@2"   => :recommended
   depends_on "cmarquardt/formulae/numpy4python@2" => :recommended
