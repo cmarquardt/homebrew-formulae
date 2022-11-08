@@ -4,7 +4,7 @@ class Scipy4pythonAT2 < Formula
   url "https://files.pythonhosted.org/packages/62/4f/7e95c5000c411164d5ca6f55ac54cda5d200a3b6719dafd215ee0bd61578/scipy-1.2.3.tar.gz"
   sha256 "ecbe6413ca90b8e19f8475bfa303ac001e81b04ec600d17fa7f816271f7cca57"
   head "https://github.com/scipy/scipy.git"
-  revision 2
+  revision 3
 
   depends_on "swig" => :build
   depends_on "gcc" # for gfortran
@@ -61,7 +61,7 @@ class Scipy4pythonAT2 < Formula
       ENV["PYTHONPATH"] = Formula["numpy"].opt_lib/"python#{version}/site-packages"
       ENV.prepend_create_path "PYTHONPATH", lib/"python#{version}/site-packages"
       system python, "setup.py", "build", "--fcompiler=gnu95"
-      system python, *Language::Python.setup_install_args(prefix)
+      system python, *Language::Python.setup_install_args(prefix, python = "python2")
     end
   end
 
