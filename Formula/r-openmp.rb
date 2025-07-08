@@ -1,8 +1,8 @@
 class ROpenmp < Formula
   desc "Software environment for statistical computing"
   homepage "https://www.r-project.org/"
-  url "https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz"
-  sha256 "b4cb675deaaeb7299d3b265d218cde43f192951ce5b89b7bb1a5148a36b2d94d"
+  url "https://cran.r-project.org/src/base/R-4/R-4.4.2.tar.gz"
+  sha256 "1578cd603e8d866b58743e49d8bf99c569e81079b6a60cf33cdf7bdffeb817ec"
   license "GPL-2.0-or-later"
 
   conflicts_with "r", because: "R_openmp provides a parallel version of R"
@@ -118,8 +118,8 @@ class ROpenmp < Formula
 
     # make Homebrew packages discoverable for R CMD INSTALL
     inreplace r_home/"etc/Makeconf" do |s|
-      s.gsub!(/^CPPFLAGS =.*/, "\\0 -I#{HOMEBREW_PREFIX}/include -I#{Formula["libomp"].opt_include} -Xclang -fopenmp")
-      s.gsub!(/^LDFLAGS =.*/, "\\0 -L#{HOMEBREW_PREFIX}/lib -L#{Formula["libomp"].opt_lib} -lomp")
+      #s.gsub!(/^CPPFLAGS =.*/, "\\0 -I#{HOMEBREW_PREFIX}/include -I#{Formula["libomp"].opt_include} -Xclang -fopenmp")
+      #s.gsub!(/^LDFLAGS =.*/, "\\0 -L#{HOMEBREW_PREFIX}/lib -L#{Formula["libomp"].opt_lib} -lomp")
       s.gsub!(/.LDFLAGS =.*/, "\\0 $(LDFLAGS)")
     end
 
