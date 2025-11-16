@@ -1,8 +1,8 @@
 class ROpenmp < Formula
   desc "Software environment for statistical computing"
   homepage "https://www.r-project.org/"
-  url "https://cran.r-project.org/src/base/R-4/R-4.4.2.tar.gz"
-  sha256 "1578cd603e8d866b58743e49d8bf99c569e81079b6a60cf33cdf7bdffeb817ec"
+  url "https://cran.r-project.org/src/base/R-4/R-4.5.1.tar.gz"
+  sha256 "b42a7921400386645b10105b91c68728787db5c4c83c9f6c30acdce632e1bb70"
   license "GPL-2.0-or-later"
 
   conflicts_with "r", because: "R_openmp provides a parallel version of R"
@@ -28,19 +28,37 @@ class ROpenmp < Formula
   depends_on "gettext"
   depends_on "jpeg-turbo"
   depends_on "libpng"
+  depends_on "libxext"
   depends_on "openblas"
   depends_on "libomp"
   depends_on "pcre2"
   depends_on "readline"
-  depends_on "tcl-tk"
+  depends_on "tcl-tk@8"
   depends_on "xz"
+  depends_on "zstd"
 
+  uses_from_macos "bzip2"
   uses_from_macos "curl"
-  uses_from_macos "icu4c"
   uses_from_macos "libffi", since: :catalina
+  uses_from_macos "zlib"
+
+on_macos do
+    depends_on "fontconfig"
+    depends_on "freetype"
+    depends_on "libx11"
+    depends_on "libxau"
+    depends_on "libxcb"
+    depends_on "libxdmcp"
+    depends_on "libxrender"
+    depends_on "pixman"
+  end
 
   on_linux do
+    depends_on "glib"
+    depends_on "harfbuzz"
+    depends_on "icu4c@77"
     depends_on "libice"
+    depends_on "libsm"
     depends_on "libtirpc"
     depends_on "libx11"
     depends_on "libxt"
@@ -50,11 +68,6 @@ class ROpenmp < Formula
   # needed to preserve executable permissions on files without shebangs
   skip_clean "lib/R/bin", "lib/R/doc"
 
-  fails_with :gcc do
-    version "11"
-    cause "Unknown. FIXME."
-  end
-
   def install
     # `configure` doesn't like curl 8+, but convince it that everything is ok.
     # TODO: report this upstream.
@@ -63,8 +76,8 @@ class ROpenmp < Formula
     args = [
       "--prefix=#{prefix}",
       "--enable-memory-profiling",
-      "--with-tcl-config=#{Formula["tcl-tk"].opt_lib}/tclConfig.sh",
-      "--with-tk-config=#{Formula["tcl-tk"].opt_lib}/tkConfig.sh",
+      "--with-tcl-config=#{Formula["tcl-tk@8"].opt_lib}/tclConfig.sh",
+      "--with-tk-config=#{Formula["tcl-tk@8"].opt_lib}/tkConfig.sh",
       "--with-blas=-L#{Formula["openblas"].opt_lib} -lopenblas",
       "--enable-R-shlib",
       "--disable-java",
@@ -107,19 +120,27 @@ class ROpenmp < Formula
       system "make", "install"
     end
 
-    cd "src/nmath/standalone" do
-      system "make"
-      ENV.deparallelize do
-        system "make", "install"
-      end
+    #cd "src/nmath/standalone" do
+    #  system "make"
+    #  ENV.deparallelize do
+    #    system "make", "install"
+    #  end
+    #end
+
+    system "make", "-C", "src/nmath/standalone"
+    ENV.deparallelize do
+      system "make", "-C", "src/nmath/standalone", "install"
     end
 
     r_home = lib/"R"
 
     # make Homebrew packages discoverable for R CMD INSTALL
     inreplace r_home/"etc/Makeconf" do |s|
-      #s.gsub!(/^CPPFLAGS =.*/, "\\0 -I#{HOMEBREW_PREFIX}/include -I#{Formula["libomp"].opt_include} -Xclang -fopenmp")
-      #s.gsub!(/^LDFLAGS =.*/, "\\0 -L#{HOMEBREW_PREFIX}/lib -L#{Formula["libomp"].opt_lib} -lomp")
+      ##s.gsub!(/^CPPFLAGS =.*/, "\\0 -I#{HOMEBREW_PREFIX}/include -I#{Formula["libomp"].opt_include} -Xclang -fopenmp")
+      ##s.gsub!(/^LDFLAGS =.*/, "\\0 -L#{HOMEBREW_PREFIX}/lib -L#{Formula["libomp"].opt_lib} -lomp")
+      #s.gsub!(/.LDFLAGS =.*/, "\\0 $(LDFLAGS)")
+      s.gsub!(/^CPPFLAGS =.*/, "\\0 -I#{HOMEBREW_PREFIX}/include")
+      s.gsub!(/^LDFLAGS =.*/, "\\0 -L#{HOMEBREW_PREFIX}/lib")
       s.gsub!(/.LDFLAGS =.*/, "\\0 $(LDFLAGS)")
     end
 
@@ -127,10 +148,9 @@ class ROpenmp < Formula
     lib.install_symlink Dir[r_home/"lib/*"]
 
     # avoid triggering mandatory rebuilds of r when gcc is upgraded
-    check_replace = OS.mac?
     inreplace lib/"R/etc/Makeconf", Formula["gcc"].prefix.realpath,
                                     Formula["gcc"].opt_prefix,
-                                    check_replace
+                                    audit_result: OS.mac?
   end
 
   def post_install
@@ -149,8 +169,7 @@ class ROpenmp < Formula
     system bin/"Rscript", "-e", "if(!capabilities('cairo')) stop('cairo not available')"
 
     system bin/"Rscript", "-e", "install.packages('gss', '.', 'https://cloud.r-project.org')"
-    assert_predicate testpath/"gss/libs/gss.so", :exist?,
-                     "Failed to install gss package"
+    assert_path_exists testpath/"gss/libs/gss.so", "Failed to install gss package"
 
     winsys = "[1] \"aqua\""
     if OS.linux?
