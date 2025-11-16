@@ -1,11 +1,11 @@
 class ROpenmp < Formula
   desc "Software environment for statistical computing"
   homepage "https://www.r-project.org/"
-  url "https://cran.r-project.org/src/base/R-4/R-4.5.1.tar.gz"
-  sha256 "b42a7921400386645b10105b91c68728787db5c4c83c9f6c30acdce632e1bb70"
+  url "https://cran.r-project.org/src/base/R-4/R-4.5.2.tar.gz"
+  sha256 "87a41ce9b50e096dd2c4282f48efea30c9916fcb7b167fa2bc988c9cf3cb6642"
   license "GPL-2.0-or-later"
 
-  conflicts_with "r", because: "R_openmp provides a parallel version of R"
+  conflicts_with "r", because: "r-openmp provides a parallel version of R"
 
   livecheck do
     url "https://cran.rstudio.com/banner.shtml"
@@ -13,16 +13,15 @@ class ROpenmp < Formula
   end
 
   #bottle do
-  #  sha256 arm64_sonoma:   "a9e3b6d8ce9d2606b9f182d30145c530dfdd52803359729465b616f8dcae0847"
-  #  sha256 arm64_ventura:  "31534a8b13f93bbd484c6392792736ca9fdc91fe6a9e428747e9291fe49b6778"
-  #  sha256 arm64_monterey: "781dc303ccb6041cbee79a17a1dc3ae5ffbacd59b5d52a04983751256dd68ae4"
-  #  sha256 sonoma:         "2a65df982cbc7a23f7f69b6853dc402461fc99cb2d31b7771e50a4f3995ab7dc"
-  #  sha256 ventura:        "3f1da54c8747815a8047de3d393c7957fd3d58b411c6a00b2dab1d64a19be7d9"
-  #  sha256 monterey:       "8b7216892a5d60604fe4a909c2f096ce2ef78bec581fa00177eb7600451aa159"
-  #  sha256 x86_64_linux:   "3405da8715d5f8069e3c12842a2a3b2e22d554541a91bcd756802ed0f9cfaa3a"
+  #  sha256 arm64_tahoe:   "07e479b7f8297bc4149646b412a57dff589f55d500b2949505ef0e0c280869e5"
+  #  sha256 arm64_sequoia: "12f81758f59c0752462640f86030664aae22fe92f0c9ee484ed3134165571fb1"
+  #  sha256 arm64_sonoma:  "cffb5c40a7e38c485df712a74c27f50c9cc85f414fb392594941edf7eeaa3986"
+  #  sha256 sonoma:        "9ba7fd1de76c5c0f910c68ece11b18298100c01225cacc3a2095c3a4ae41e9a2"
+  #  sha256 arm64_linux:   "bb318a83d2bb9854ccabb52af2315138199c771a2a5cde91b40d8a79503d308e"
+  #  sha256 x86_64_linux:  "9cd4b3c692a957f501ebb0f89ceab1f2d05e3c416f992accedd5d95f49529a38"
   #end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "cairo"
   depends_on "gcc" # for gfortran
   depends_on "gettext"
@@ -33,16 +32,16 @@ class ROpenmp < Formula
   depends_on "libomp"
   depends_on "pcre2"
   depends_on "readline"
-  depends_on "tcl-tk@8"
+  depends_on "tcl-tk"
   depends_on "xz"
   depends_on "zstd"
 
   uses_from_macos "bzip2"
   uses_from_macos "curl"
-  uses_from_macos "libffi", since: :catalina
+  uses_from_macos "libffi"
   uses_from_macos "zlib"
 
-on_macos do
+  on_macos do
     depends_on "fontconfig"
     depends_on "freetype"
     depends_on "libx11"
@@ -56,7 +55,7 @@ on_macos do
   on_linux do
     depends_on "glib"
     depends_on "harfbuzz"
-    depends_on "icu4c@77"
+    depends_on "icu4c@78"
     depends_on "libice"
     depends_on "libsm"
     depends_on "libtirpc"
@@ -76,8 +75,8 @@ on_macos do
     args = [
       "--prefix=#{prefix}",
       "--enable-memory-profiling",
-      "--with-tcl-config=#{Formula["tcl-tk@8"].opt_lib}/tclConfig.sh",
-      "--with-tk-config=#{Formula["tcl-tk@8"].opt_lib}/tkConfig.sh",
+      "--with-tcl-config=#{Formula["tcl-tk"].opt_lib}/tclConfig.sh",
+      "--with-tk-config=#{Formula["tcl-tk"].opt_lib}/tkConfig.sh",
       "--with-blas=-L#{Formula["openblas"].opt_lib} -lopenblas",
       "--enable-R-shlib",
       "--disable-java",
@@ -120,13 +119,6 @@ on_macos do
       system "make", "install"
     end
 
-    #cd "src/nmath/standalone" do
-    #  system "make"
-    #  ENV.deparallelize do
-    #    system "make", "install"
-    #  end
-    #end
-
     system "make", "-C", "src/nmath/standalone"
     ENV.deparallelize do
       system "make", "-C", "src/nmath/standalone", "install"
@@ -136,9 +128,6 @@ on_macos do
 
     # make Homebrew packages discoverable for R CMD INSTALL
     inreplace r_home/"etc/Makeconf" do |s|
-      ##s.gsub!(/^CPPFLAGS =.*/, "\\0 -I#{HOMEBREW_PREFIX}/include -I#{Formula["libomp"].opt_include} -Xclang -fopenmp")
-      ##s.gsub!(/^LDFLAGS =.*/, "\\0 -L#{HOMEBREW_PREFIX}/lib -L#{Formula["libomp"].opt_lib} -lomp")
-      #s.gsub!(/.LDFLAGS =.*/, "\\0 $(LDFLAGS)")
       s.gsub!(/^CPPFLAGS =.*/, "\\0 -I#{HOMEBREW_PREFIX}/include")
       s.gsub!(/^LDFLAGS =.*/, "\\0 -L#{HOMEBREW_PREFIX}/lib")
       s.gsub!(/.LDFLAGS =.*/, "\\0 $(LDFLAGS)")
