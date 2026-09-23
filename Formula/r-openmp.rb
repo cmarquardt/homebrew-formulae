@@ -72,6 +72,13 @@ class ROpenmp < Formula
     # TODO: report this upstream.
     ENV["r_cv_have_curl728"] = "yes"
 
+    # Under Homebrew's build sandbox, R can't always resolve the system
+    # timezone via /etc/localtime and falls back to a synthesized "UTC0"
+    # string, which isn't a real zoneinfo name. That breaks R 4.6's docs
+    # build ("unknown timezone 'UTC0'" promoted to a fatal error while
+    # building DateTimeClasses.Rd). Pin TZ explicitly to avoid the lookup.
+    ENV["TZ"] = "UTC"
+
     args = [
       "--prefix=#{prefix}",
       "--enable-memory-profiling",
