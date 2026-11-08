@@ -1,35 +1,24 @@
 class ROpenmp < Formula
   desc "Software environment for statistical computing"
   homepage "https://www.r-project.org/"
-  url "https://cran.r-project.org/src/base/R-4/R-4.6.1.tar.gz"
-  sha256 "4da6e61d2c0aac5f14a2e7e432cb5fcc269efe83da4293050ba7f03dff4e2cf4"
+  url "https://cran.r-project.org/src/base/R-4/R-4.6.2.tar.gz"
+  sha256 "c297040f6392b1dac6e5c0eb398422cfdaedf540ae2205edb9ad0d10cb10ee00"
   license "GPL-2.0-or-later"
-
-  conflicts_with "r", because: "r-openmp provides a parallel version of R"
+  compatibility_version 2
 
   livecheck do
     url "https://cran.rstudio.com/banner.shtml"
     regex(%r{href=(?:["']?|.*?/)R[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
-  #bottle do
-  #  sha256 arm64_tahoe:   "07e479b7f8297bc4149646b412a57dff589f55d500b2949505ef0e0c280869e5"
-  #  sha256 arm64_sequoia: "12f81758f59c0752462640f86030664aae22fe92f0c9ee484ed3134165571fb1"
-  #  sha256 arm64_sonoma:  "cffb5c40a7e38c485df712a74c27f50c9cc85f414fb392594941edf7eeaa3986"
-  #  sha256 sonoma:        "9ba7fd1de76c5c0f910c68ece11b18298100c01225cacc3a2095c3a4ae41e9a2"
-  #  sha256 arm64_linux:   "bb318a83d2bb9854ccabb52af2315138199c771a2a5cde91b40d8a79503d308e"
-  #  sha256 x86_64_linux:  "9cd4b3c692a957f501ebb0f89ceab1f2d05e3c416f992accedd5d95f49529a38"
-  #end
-
   depends_on "pkgconf" => :build
   depends_on "cairo"
-  depends_on "gcc" # for gfortran
-  depends_on "gettext"
+  depends_on "gcc"
   depends_on "jpeg-turbo"
-  depends_on "libpng"
-  depends_on "libxext"
-  depends_on "openblas"
   depends_on "libomp"
+  depends_on "libpng"
+  depends_on "libx11"
+  depends_on "openblas"
   depends_on "pcre2"
   depends_on "readline"
   depends_on "tcl-tk"
@@ -38,68 +27,63 @@ class ROpenmp < Formula
 
   uses_from_macos "bzip2"
   uses_from_macos "curl"
-  uses_from_macos "libffi"
-  uses_from_macos "zlib"
 
   on_macos do
+    depends_on "brotli"
     depends_on "fontconfig"
     depends_on "freetype"
-    depends_on "libx11"
+    depends_on "gettext"
     depends_on "libxau"
     depends_on "libxcb"
     depends_on "libxdmcp"
+    depends_on "libxext"
     depends_on "libxrender"
     depends_on "pixman"
   end
 
   on_linux do
     depends_on "glib"
-    depends_on "harfbuzz"
-    depends_on "icu4c@78"
-    depends_on "libice"
-    depends_on "libsm"
+    depends_on "icu4c@79"
     depends_on "libtirpc"
-    depends_on "libx11"
     depends_on "libxt"
     depends_on "pango"
+    depends_on "zlib-ng-compat"
   end
+
+  conflicts_with "r", because: "r-openmp provides a parallel version of R" # for gfortran
 
   # needed to preserve executable permissions on files without shebangs
   skip_clean "lib/R/bin", "lib/R/doc"
+
+  allow_network_access! :test
 
   def install
     # `configure` doesn't like curl 8+, but convince it that everything is ok.
     # TODO: report this upstream.
     ENV["r_cv_have_curl728"] = "yes"
 
-    # Under Homebrew's build sandbox, R can't always resolve the system
-    # timezone via /etc/localtime and falls back to a synthesized "UTC0"
-    # string, which isn't a real zoneinfo name. That breaks R 4.6's docs
-    # build ("unknown timezone 'UTC0'" promoted to a fatal error while
-    # building DateTimeClasses.Rd). Pin TZ explicitly to avoid the lookup.
-    ENV["TZ"] = "UTC"
-
     args = [
       "--prefix=#{prefix}",
       "--enable-memory-profiling",
-      "--with-tcl-config=#{Formula["tcl-tk"].opt_lib}/tclConfig.sh",
-      "--with-tk-config=#{Formula["tcl-tk"].opt_lib}/tkConfig.sh",
-      "--with-blas=-L#{Formula["openblas"].opt_lib} -lopenblas",
+      "--with-tcl-config=#{formula_opt_lib("tcl-tk")}/tclConfig.sh",
+      "--with-tk-config=#{formula_opt_lib("tcl-tk")}/tkConfig.sh",
+      "--with-blas=-L#{formula_opt_lib("openblas")} -lopenblas",
       "--enable-R-shlib",
       "--disable-java",
       "--with-cairo",
       # This isn't necessary to build R, but it's saved in Makeconf
       # and helps CRAN packages find gfortran when Homebrew may not be
       # in PATH (e.g. under RStudio, launched from Finder)
-      "FC=#{Formula["gcc"].opt_bin}/gfortran",
+      "FC=#{formula_opt_bin("gcc")}/gfortran",
     ]
 
     if OS.mac?
       args << "--without-x"
       args << "--with-aqua"
 
-      ENV.append "CPPFLAGS", "-I#{Formula["libomp"].opt_include} -Xclang -fopenmp"
-      ENV.append "LDFLAGS", "-L#{Formula["libomp"].opt_lib} -lomp"
+      # The point of r-openmp: build R with OpenMP via Homebrew's libomp.
+      ENV.append "CPPFLAGS", "-I#{formula_opt_include("libomp")} -Xclang -fopenmp"
+      ENV.append "LDFLAGS", "-L#{formula_opt_lib("libomp")} -lomp"
     else
       args << "--libdir=#{lib}" # avoid using lib64 on CentOS
 
@@ -110,16 +94,17 @@ class ROpenmp < Formula
       # search those directories. Remove -LHOMEBREW_PREFIX/lib from LDFLAGS.
       ENV.remove "LDFLAGS", "-L#{HOMEBREW_PREFIX}/lib"
 
-      ENV.append "CPPFLAGS", "-I#{Formula["libtirpc"].opt_include}/tirpc"
-      ENV.append "LDFLAGS", "-L#{Formula["libtirpc"].opt_lib}"
+      ENV.append "CPPFLAGS", "-I#{formula_opt_include("libtirpc")}/tirpc"
+      ENV.append "LDFLAGS", "-L#{formula_opt_lib("libtirpc")}"
     end
 
     # Help CRAN packages find gettext and readline
-    ["gettext", "readline", "xz"].each do |f|
-      ENV.append "CPPFLAGS", "-I#{Formula[f].opt_include}"
-      ENV.append "LDFLAGS", "-L#{Formula[f].opt_lib}"
+    %w[gettext readline xz].each do |f|
+      ENV.append "CPPFLAGS", "-I#{formula_opt_include(f)}"
+      ENV.append "LDFLAGS", "-L#{formula_opt_lib(f)}"
     end
 
+    ENV["TZ"] = "UTC"
     system "./configure", *args
     system "make"
     ENV.deparallelize do
@@ -145,10 +130,12 @@ class ROpenmp < Formula
 
     # avoid triggering mandatory rebuilds of r when gcc is upgraded
     inreplace lib/"R/etc/Makeconf", Formula["gcc"].prefix.realpath,
-                                    Formula["gcc"].opt_prefix,
+                                    formula_opt_prefix("gcc"),
                                     audit_result: OS.mac?
   end
 
+  # Unlike core r, keep site-library as a real directory under HOMEBREW_PREFIX,
+  # where the installed R packages live, and only point the keg at it.
   def post_install
     short_version = Utils.safe_popen_read(bin/"Rscript", "-e", "cat(as.character(getRversion()[1,1:2]))")
     site_library = HOMEBREW_PREFIX/"lib/R"/short_version/"site-library"
